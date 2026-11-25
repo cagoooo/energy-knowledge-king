@@ -1,0 +1,17 @@
+{
+  "name": "能源知識王線上競賽",
+  "short_name": "能源知識王",
+  "description": "桃園市能源教育學校系列活動：答題 90 分以上、上傳三張截圖，最快完成者送全家禮券 100 元。",
+  "lang": "zh-Hant-TW",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fdf5e6",
+  "theme_color": "#2c78bc",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

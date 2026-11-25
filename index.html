@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <!-- 🛡️ App 內建瀏覽器防護：上傳表單要用學校 Google 帳號登入，Google 禁止在 LINE／FB 內建瀏覽器登入（403 disallowed_useragent） -->
+  <!-- LINE → 自動帶 openExternalBrowser=1 跳系統瀏覽器；FB/IG/Messenger → Android 自動叫出 Chrome（只試一次）並顯示可關閉的引導；iPhone 只顯示引導 -->
+  <script>
+    (function () {
+      var ua = navigator.userAgent || "";
+      var isLine = /\bLine\//i.test(ua);
+      var isOtherInApp = /FBAN|FBAV|FB_IAB|Instagram|Messenger|MicroMessenger|KAKAOTALK/i.test(ua);
+      var isAndroid = /Android/i.test(ua);
+
+      if (isLine && location.search.indexOf("openExternalBrowser=1") === -1) {
+        var sep = location.search ? "&" : "?";
+        location.replace(location.href.split("#")[0] + sep + "openExternalBrowser=1" + location.hash);
+        return;
+      }
+      if (!isOtherInApp && !isLine) return;
+
+      var chromeIntent = "";
+      if (isAndroid) {
+        var fallback = location.href.split("#")[0]
+          + (location.search ? "&" : "?") + "iabEscape=1" + location.hash;
+        chromeIntent = "intent://" + location.host + location.pathname + location.search + location.hash
+          + "#Intent;scheme=" + location.protocol.replace(":", "")
+          + ";package=com.android.chrome"
+          + ";S.browser_fallback_url=" + encodeURIComponent(fallback) + ";end";
+      }
+      var autoJump = false;
+      if (chromeIntent) {
+        autoJump = location.search.indexOf("iabEscape=1") === -1;
+        try { autoJump = autoJump && sessionStorage.getItem("iabEscapeTried") !== "1"; } catch (e) { /* 部分 App 不允許 */ }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var d = document.createElement("div");
+        d.id = "inapp-browser-guide";
+        d.style.cssText = "position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.94);color:#fff;display:flex;align-items:center;justify-content:center;padding:24px;font-family:system-ui,'Microsoft JhengHei',sans-serif;";
+        var chromeBtn = chromeIntent
+          ? '<a id="inapp-open-chrome" href="' + chromeIntent.replace(/"/g, "&quot;") + '" style="display:block;margin:22px 0 4px;padding:14px 18px;border-radius:999px;background:#22c55e;color:#052e16;font-size:17px;font-weight:800;text-decoration:none;">用 Chrome 開啟</a>'
+            + '<p style="font-size:13px;color:#94a3b8;margin:8px 0 18px;">按了沒反應，再照下面的方法</p>'
+          : "";
+        d.innerHTML = '<div style="max-width:420px;width:100%;box-sizing:border-box;text-align:center;background:#1e293b;border-radius:16px;padding:32px 26px;">'
+          + '<div style="font-size:52px;">🌐</div>'
+          + '<h4 style="font-weight:800;margin:14px 0 10px;font-size:20px;">請改用瀏覽器開啟</h4>'
+          + '<p style="font-size:15px;line-height:1.8;color:#cbd5e1;margin:0;">您目前在 <b style="color:#fbbf24;">App 內建瀏覽器</b>（LINE／FB 等）中。<b>上傳表單要用學校 Google 帳號登入</b>，Google 禁止在這裡登入。</p>'
+          + chromeBtn
+          + '<p style="font-size:15px;line-height:1.8;color:#cbd5e1;margin:' + (chromeIntent ? "0" : "14px 0 0") + ';">請點右上／右下角「<b>⋯</b>」→ 選「<b style="color:#4ade80;">用預設瀏覽器開啟</b>」。</p>'
+          + '<button type="button" id="inapp-guide-dismiss" onclick="this.parentNode.parentNode.remove()" style="margin-top:18px;background:transparent;border:1px solid #475569;color:#cbd5e1;border-radius:999px;padding:10px 18px;font-size:14px;">先看活動說明，稍後再換</button>'
+          + '</div>';
+        document.body.appendChild(d);
+        if (autoJump) {
+          try { sessionStorage.setItem("iabEscapeTried", "1"); } catch (e) { /* 部分 App 不允許 */ }
+          setTimeout(function () { location.href = chromeIntent; }, 300);
+        }
+      });
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>能源知識王線上競賽｜桃園市能源教育學校系列活動</title>
+  <meta name="description" content="桃園市龍潭國民小學辦理「能源知識王線上競賽」：115 年 11 月 23 日至 12 月 7 日，五年級學生與全體教職員進入能源知識題庫答到 90 分以上，上傳三張截圖，最快完成者可獲全家便利商店禮券 100 元。">
+  <meta name="theme-color" content="#2c78bc">
+  <meta name="build-version" content="__BUILD_VERSION__">
+
+  <link rel="icon" href="favicon.ico?v=__BUILD_VERSION__" sizes="32x32">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=__BUILD_VERSION__">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=__BUILD_VERSION__">
+  <link rel="manifest" href="manifest.webmanifest?v=__BUILD_VERSION__">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="能源知識王">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <link rel="canonical" href="https://cagoooo.github.io/energy-knowledge-king/">
+  <!-- Open Graph：LINE／Facebook 分享卡片（og:image 一定要絕對網址＋版本號，平台才會重抓新圖） -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="能源知識王線上競賽">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:url" content="https://cagoooo.github.io/energy-knowledge-king/">
+  <meta property="og:title" content="能源知識王線上競賽｜答到 90 分就來挑戰！">
+  <meta property="og:description" content="115/11/23（一）～12/7（一），五年級學生與全體教職員都能參加。答題 90 分以上、上傳三張截圖，最快完成者送全家禮券 100 元！">
+  <meta property="og:image" content="https://cagoooo.github.io/energy-knowledge-king/og-image.jpg?v=__BUILD_VERSION__">
+  <meta property="og:image:secure_url" content="https://cagoooo.github.io/energy-knowledge-king/og-image.jpg?v=__BUILD_VERSION__">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="能源知識王線上競賽：115.11.23～12.7，答題 90 分以上、截圖合照、上傳表單，全家禮券 100 元">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="能源知識王線上競賽｜答到 90 分就來挑戰！">
+  <meta name="twitter:description" content="115/11/23（一）～12/7（一），答題 90 分以上、上傳三張截圖，最快完成者送全家禮券 100 元！">
+  <meta name="twitter:image" content="https://cagoooo.github.io/energy-knowledge-king/og-image.jpg?v=__BUILD_VERSION__">
+  <meta name="twitter:image:alt" content="能源知識王線上競賽分享圖">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=__BUILD_VERSION__">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top" aria-label="回到頁首">
+        <img src="favicon.svg?v=__BUILD_VERSION__" alt="" width="36" height="36">
+        <span>能源知識王</span>
+      </a>
+      <nav class="topnav" aria-label="頁面導覽">
+        <a href="#steps">過關步驟</a>
+        <a href="#prize">獎勵</a>
+        <a href="#rules">注意事項</a>
+        <a href="#qr">QR Code</a>
+        <a href="#poster">活動海報</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 主視覺 -->
+    <section class="hero" id="top">
+      <div class="sky" aria-hidden="true"><span class="sun"></span><span class="cloud c1"></span><span class="cloud c2"></span></div>
+      <div class="wrap hero__grid">
+        <div class="hero__text">
+          <p class="hero__org">桃園市龍潭國民小學辦理<br class="br-sm">「桃園市能源教育學校系列活動」</p>
+          <h1 class="hero__title"><span class="t1">能源知識王</span><span class="t2">線上競賽</span></h1>
+          <p class="hero__date"><span>115 年 11 月 23 日（一）</span><span><span class="tilde">～</span> 12 月 7 日（一）</span></p>
+
+          <div class="status" id="status" aria-live="polite">
+            <span class="status__dot" aria-hidden="true"></span>
+            <span class="status__text" id="statusText">活動期間：115/11/23（一）～ 12/7（一）</span>
+          </div>
+
+          <div class="cta">
+            <a class="btn btn--quiz" href="https://ea01.moeaea.gov.tw/e0802/2024game/index.php" target="_blank" rel="noopener noreferrer">
+              <span class="btn__icon" aria-hidden="true">💡</span>
+              <span class="btn__label"><b>進入能源知識題庫</b><small>答到 90 分以上就過關</small></span>
+            </a>
+            <a class="btn btn--upload js-form-link" href="https://forms.gle/5JKyZ5D77dZJDfK99" target="_blank" rel="noopener noreferrer">
+              <span class="btn__icon" aria-hidden="true">📤</span>
+              <span class="btn__label"><b>通關截圖上傳區</b><small>限本校 ltes 帳號登入</small></span>
+            </a>
+          </div>
+          <p class="hero__tip"><span aria-hidden="true">📱</span> 用手機作答時，<b>把手機轉成橫向</b>比較好操作喔！</p>
+        </div>
+
+        <figure class="hero__poster">
+          <button type="button" class="poster-btn js-open-poster" aria-label="放大查看活動海報">
+            <img src="assets/poster.webp" alt="能源知識王線上競賽活動海報" width="1086" height="1448" fetchpriority="high">
+            <span class="poster-btn__zoom">🔍 點我放大海報</span>
+          </button>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 重點三格 -->
+    <section class="facts wrap" aria-label="活動重點">
+      <article class="fact fact--orange">
+        <span class="tag">一、參加對象</span>
+        <p><b>本校五年級學生</b>、<b>全體教職員</b></p>
+      </article>
+      <article class="fact fact--blue">
+        <span class="tag">二、活動日期</span>
+        <p><b>115/11/23（一）</b>至 <b>12/7（一）</b></p>
+      </article>
+      <article class="fact fact--green">
+        <span class="tag">三、獎勵</span>
+        <p><b>全家便利商店禮券 100 元</b><br>學生組 70 名・教職員組 20 名</p>
+      </article>
+    </section>
+
+    <!-- 過關步驟 -->
+    <section class="section wrap" id="steps">
+      <div class="section__head">
+        <span class="tag tag--pink">過關步驟</span>
+        <h2>四步驟完成挑戰</h2>
+        <p class="lead">上傳時需要 <b>3 張圖</b>，三張都符合才算完成。建議先照順序把截圖準備好，再一次上傳。</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__no">1</span>
+          <h3>答題到 90 分以上</h3>
+          <p>進入「能源知識題庫」作答，拿到 <b>90 分以上</b>後，把<b>過關畫面截圖</b>。</p>
+          <span class="step__need">📸 第 1 張：過關截圖</span>
+        </li>
+        <li class="step">
+          <span class="step__no">2</span>
+          <h3>和過關畫面合照</h3>
+          <p>參加者本人和<b>過關畫面</b>一起拍一張合照（可以請家人或同學幫忙拍）。</p>
+          <span class="step__need">🤳 第 2 張：本人合照</span>
+        </li>
+        <li class="step">
+          <span class="step__no">3</span>
+          <h3>送出前先截圖</h3>
+          <p>填寫資料時，在<b>按下「送出」之前</b>截圖，畫面要清楚看得到<b>「龍潭國小」</b>字樣。教職員填任何年級都可以。</p>
+          <span class="step__need">🧾 第 3 張：送出前畫面</span>
+        </li>
+        <li class="step step--upload">
+          <span class="step__no">4</span>
+          <h3>上傳三張圖</h3>
+          <p>開啟「通關完成截圖上傳區」，用<b>本校 ltes 網域帳號</b>登入，上傳三張圖並送出。</p>
+          <span class="step__need">⏱ 依表單完成時間排序</span>
+        </li>
+      </ol>
+
+      <div class="warn">
+        <span class="warn__icon" aria-hidden="true">⚠️</span>
+        <p><b>最常漏掉的一步：</b>第 3 張一定要在按「送出」<b>之前</b>截圖，按下去之後就看不到「龍潭國小」字樣了！</p>
+      </div>
+
+      <!-- 互動準備清單 -->
+      <div class="checklist" id="checklist">
+        <div class="checklist__head">
+          <h3>✅ 我的上傳準備清單</h3>
+          <p>準備好一張就打勾，三張都勾好就能上傳（勾選只存在這台裝置）。</p>
+        </div>
+        <div class="checklist__items">
+          <label class="check"><input type="checkbox" data-key="pass"><span class="check__box" aria-hidden="true"></span><span>過關截圖（90 分以上）</span></label>
+          <label class="check"><input type="checkbox" data-key="photo"><span class="check__box" aria-hidden="true"></span><span>本人與過關畫面合照</span></label>
+          <label class="check"><input type="checkbox" data-key="submit"><span class="check__box" aria-hidden="true"></span><span>送出前畫面（看得到「龍潭國小」）</span></label>
+        </div>
+        <div class="checklist__foot">
+          <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-label="已準備張數"><span class="meter__bar" id="meterBar"></span></div>
+          <p class="checklist__msg" id="checkMsg">還差 3 張，加油！</p>
+          <a class="btn btn--upload btn--sm js-form-link" id="checkUpload" href="https://forms.gle/5JKyZ5D77dZJDfK99" target="_blank" rel="noopener noreferrer">
+            <span class="btn__icon" aria-hidden="true">📤</span><span class="btn__label"><b>前往上傳</b></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 獎勵 -->
+    <section class="section section--tint" id="prize">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="tag tag--green">三、獎勵</span>
+          <h2>最快完成上傳就有獎</h2>
+          <p class="lead">獎品：<b>全家便利商店禮券 100 元</b>。名次依 Google 表單<b>完成時間</b>排序，越早上傳越有機會！</p>
+        </div>
+        <div class="prizes">
+          <article class="prize prize--student">
+            <span class="prize__emoji" aria-hidden="true">🧒</span>
+            <h3>學生組</h3>
+            <p class="prize__big">每班 10 名</p>
+            <p>五年級各班取最快完成上傳者，<b>共 70 名</b></p>
+          </article>
+          <article class="prize prize--staff">
+            <span class="prize__emoji" aria-hidden="true">🧑‍🏫</span>
+            <h3>教職員組</h3>
+            <p class="prize__big">共 20 名</p>
+            <p>全體教職員取最快完成上傳者</p>
+          </article>
+          <article class="prize prize--bonus">
+            <span class="prize__emoji" aria-hidden="true">🌏</span>
+            <h3>沒搶到名額也有收穫</h3>
+            <p class="prize__big">能源知識・無價</p>
+            <p>每位完成挑戰的人，都帶走滿滿的能源教育知識！</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 注意事項 -->
+    <section class="section wrap" id="rules">
+      <div class="section__head">
+        <span class="tag tag--pink">四、注意事項</span>
+        <h2>上傳前請再確認</h2>
+      </div>
+      <div class="rules">
+        <article class="rule">
+          <span class="rule__no">1</span>
+          <div><h3>上傳帳號</h3><p>限<b>本校教職員及學生信箱帳號</b>（ltes 網域）。用個人 Gmail 會無法上傳。</p></div>
+        </article>
+        <article class="rule">
+          <span class="rule__no">2</span>
+          <div><h3>時間順序</h3><p>依 <b>Google 表單完成時間</b>排序。</p></div>
+        </article>
+        <article class="rule rule--wide">
+          <span class="rule__no">3</span>
+          <div>
+            <h3>上傳內容：三張都要符合</h3>
+            <ul class="need-list">
+              <li><b>過關截圖：</b>「90 分以上」過關截圖 1 張。</li>
+              <li><b>本人合照：</b>參加者與過關畫面「合照」1 張。</li>
+              <li><b>資料送出：</b>完成「送出前」畫面截圖 1 張，須清楚顯示「龍潭國小」字樣；教職員填任何年級皆可。</li>
+              <li><b>提醒：</b>請在按下「送出」<b>前</b>截圖，不然會看不到「龍潭國小」字樣。</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- QR Code -->
+    <section class="section section--tint" id="qr">
+      <div class="wrap">
+        <div class="section__head">
+          <span class="tag tag--blue">QR Code</span>
+          <h2>手機掃一下就能開始</h2>
+          <p class="lead">老師可以把這區投影在大螢幕，讓學生或家長用手機掃描。</p>
+        </div>
+        <div class="qrs">
+          <article class="qr">
+            <img src="assets/qr-quiz.svg" alt="能源知識題庫 QR Code" width="220" height="220">
+            <h3>能源知識題庫</h3>
+            <p>若使用手機，採用橫向畫面較容易操作</p>
+            <a class="qr__url" href="https://ea01.moeaea.gov.tw/e0802/2024game/index.php" target="_blank" rel="noopener noreferrer">ea01.moeaea.gov.tw/e0802/2024game/index.php</a>
+            <button type="button" class="copy-btn" data-copy="https://ea01.moeaea.gov.tw/e0802/2024game/index.php">📋 複製連結</button>
+          </article>
+          <article class="qr">
+            <img src="assets/qr-form.svg" alt="通關完成截圖上傳區 QR Code" width="220" height="220">
+            <h3>通關完成截圖上傳區</h3>
+            <p>限用本校師生帳號登入（ltes 網域）</p>
+            <a class="qr__url js-form-link" href="https://forms.gle/5JKyZ5D77dZJDfK99" target="_blank" rel="noopener noreferrer">forms.gle/5JKyZ5D77dZJDfK99</a>
+            <button type="button" class="copy-btn" data-copy="https://forms.gle/5JKyZ5D77dZJDfK99">📋 複製連結</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 競賽目的＋海報 -->
+    <section class="section wrap purpose-grid" id="poster">
+      <article class="purpose">
+        <span class="tag tag--purple">五、競賽目的</span>
+        <h2>把正確的能源態度帶回家</h2>
+        <p>本競賽的目的是<b>「推廣能源教育」</b>，期望將正確的能源態度傳遞到家庭與社區中。</p>
+        <p class="purpose__family">👨‍👩‍👧 歡迎家長陪孩子一起作答、一起拍合照，一同參與完成！</p>
+        <button type="button" class="btn btn--ghost js-open-poster"><span class="btn__icon" aria-hidden="true">🖼️</span><span class="btn__label"><b>查看完整活動海報</b></span></button>
+      </article>
+      <figure class="poster-thumb">
+        <button type="button" class="poster-btn js-open-poster" aria-label="放大查看活動海報">
+          <img src="assets/poster.webp" alt="" width="1086" height="1448" loading="lazy">
+        </button>
+      </figure>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <img src="favicon.svg?v=__BUILD_VERSION__" alt="" width="48" height="48">
+        <div><strong>能源知識王線上競賽</strong><span>桃園市能源教育學校系列活動・龍潭國小辦理</span></div>
+      </div>
+      <ul class="footer-points">
+        <li><span class="fp-icon" aria-hidden="true">📅</span><div><strong>活動期間</strong><small>115/11/23（一）～ 12/7（一）</small></div></li>
+        <li><span class="fp-icon" aria-hidden="true">🔐</span><div><strong>上傳帳號</strong><small>限本校 ltes 網域信箱</small></div></li>
+        <li><span class="fp-icon" aria-hidden="true">⏱</span><div><strong>名次排序</strong><small>依表單完成時間</small></div></li>
+      </ul>
+      <nav class="footer-links" aria-label="快速連結">
+        <a class="footer-link" href="https://ea01.moeaea.gov.tw/e0802/2024game/index.php" target="_blank" rel="noopener noreferrer">💡 能源知識題庫</a>
+        <a class="footer-link js-form-link" href="https://forms.gle/5JKyZ5D77dZJDfK99" target="_blank" rel="noopener noreferrer">📤 截圖上傳區</a>
+        <a class="footer-link" href="#steps">🧭 過關步驟</a>
+        <button type="button" class="footer-link js-share">🔗 分享這個網站</button>
+      </nav>
+    </div>
+    <div class="wrap footer-bottom">
+      <p class="site-credit">Made with <span class="site-credit__heart" aria-label="愛心">❤️</span> by
+        <a href="https://cagoooo.github.io/Akai/" target="_blank" rel="noopener noreferrer" class="site-credit__author">阿凱老師</a></p>
+      <p class="version-tag" id="versionTag">版本 __BUILD_VERSION__</p>
+    </div>
+  </footer>
+
+  <!-- 手機底部快捷列 -->
+  <div class="dock" aria-label="快速操作">
+    <a class="dock__btn dock__btn--quiz" href="https://ea01.moeaea.gov.tw/e0802/2024game/index.php" target="_blank" rel="noopener noreferrer">💡 去答題</a>
+    <a class="dock__btn dock__btn--upload js-form-link" href="https://forms.gle/5JKyZ5D77dZJDfK99" target="_blank" rel="noopener noreferrer">📤 上傳截圖</a>
+  </div>
+
+  <!-- 海報放大檢視 -->
+  <dialog class="lightbox" id="lightbox" aria-label="活動海報">
+    <div class="lightbox__bar">
+      <span>活動海報（可雙指放大）</span>
+      <button type="button" class="lightbox__close" id="lightboxClose" aria-label="關閉">✕</button>
+    </div>
+    <div class="lightbox__body"><img src="assets/poster.webp" alt="能源知識王線上競賽活動海報完整內容" width="1086" height="1448" loading="lazy"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js?v=__BUILD_VERSION__" defer></script>
+  <script src="js/sw-register.js?v=__BUILD_VERSION__" defer></script>
+</body>
+</html>

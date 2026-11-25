@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    position: relative;
+    background:
+      radial-gradient(circle at 8% 12%, #ffe27a 0 54px, #fff1b8 55px 84px, transparent 85px),
+      radial-gradient(ellipse 260px 70px at 30% 8%, rgba(255,255,255,.95) 60%, transparent 62%),
+      radial-gradient(ellipse 200px 56px at 78% 6%, rgba(255,255,255,.85) 60%, transparent 62%),
+      linear-gradient(180deg, #8ccbf2 0%, #bfe3f7 48%, #e9f6ea 70%, #cfe9b9 100%);
+    color: #1d3557;
+  }
+  .hill { position: absolute; left: -80px; right: -80px; bottom: -150px; height: 260px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 20%, #8fd16f, #5fae4b); }
+  .hill.b { left: 380px; right: -300px; bottom: -170px; background: radial-gradient(ellipse at 40% 20%, #a6dc83, #6dbb55); }
+  .card {
+    position: absolute; left: 56px; top: 64px; width: 690px; height: 502px;
+    background: #fffaf0; border-radius: 34px; padding: 34px 40px 30px;
+    box-shadow: 0 18px 40px rgba(29,53,87,.22), inset 0 -6px 0 rgba(214,190,150,.35), inset 0 4px 0 #fff;
+  }
+  .org { display: inline-block; font-weight: 700; font-size: 23px; color: #2c6aa8;
+    background: #e3f1fc; border-radius: 999px; padding: 7px 20px; letter-spacing: .02em; }
+  h1 { margin-top: 18px; line-height: 1.04; font-weight: 900; letter-spacing: .02em; }
+  h1 .l1 { display: block; font-size: 100px; color: #1f4f8f;
+    text-shadow: 0 5px 0 #f7c843, 0 9px 0 rgba(29,53,87,.18); }
+  h1 .l2 { display: inline-block; margin-top: 14px; font-size: 54px; color: #fff; background: #e0574a;
+    padding: 4px 26px 8px; border-radius: 18px; box-shadow: 0 6px 0 #a8382e; }
+  .date { margin-top: 20px; font-size: 34px; font-weight: 900; color: #1d3557; }
+  .who { margin-top: 4px; font-size: 24px; font-weight: 700; color: #4a5a72; }
+  .steps { display: flex; gap: 12px; margin-top: 16px; }
+  .steps span { font-size: 23px; font-weight: 700; padding: 9px 16px; border-radius: 14px; color: #1d3557; }
+  .s1 { background: #ffe8c2; } .s2 { background: #dcefd5; } .s3 { background: #fde0e4; }
+  .poster {
+    position: absolute; right: 64px; top: 40px; width: 378px; height: 504px; border-radius: 18px; overflow: hidden;
+    transform: rotate(3.5deg); border: 8px solid #fff;
+    box-shadow: 0 22px 44px rgba(29,53,87,.30);
+  }
+  .poster img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .prize {
+    position: absolute; right: 30px; bottom: 26px; transform: rotate(-4deg);
+    background: #2f9a48; color: #fff; font-weight: 900; font-size: 30px; padding: 12px 26px 14px; border-radius: 20px;
+    box-shadow: 0 7px 0 #1f6e31, 0 16px 30px rgba(0,0,0,.18);
+  }
+  .prize small { display: block; font-size: 19px; font-weight: 700; opacity: .92; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="hill"></div><div class="hill b"></div>
+  <div class="card">
+    <span class="org">桃園市能源教育學校系列活動・龍潭國小辦理</span>
+    <h1><span class="l1">能源知識王</span><span class="l2">線上競賽</span></h1>
+    <p class="date">115.11.23（一）～ 12.7（一）</p>
+    <p class="who">參加對象：五年級學生・全體教職員</p>
+    <div class="steps"><span class="s1">① 答題 90 分以上</span><span class="s2">② 截圖＋合照</span><span class="s3">③ 上傳表單</span></div>
+  </div>
+  <div class="poster"><img src="../assets/poster.webp" alt=""></div>
+  <div class="prize">全家禮券 100 元<small>學生每班 10 名・教職員 20 名</small></div>
+</body>
+</html>
